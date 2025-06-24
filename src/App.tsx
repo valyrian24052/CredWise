@@ -1,7 +1,5 @@
 import { useState, useEffect, type FC, type ReactNode, type ButtonHTMLAttributes, type InputHTMLAttributes, type LabelHTMLAttributes, type ChangeEvent } from "react";
 
-// --- Mock UI Components (Fully-Typed for TypeScript) ---
-
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: string;
   size?: string;
