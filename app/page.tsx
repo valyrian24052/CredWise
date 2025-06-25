@@ -431,13 +431,6 @@ export default function CreditWiseApp() {
                       <span className="text-2xl font-bold text-white px-2">{card.name}</span>
                     </div>
                   </div>
-                  <div className="absolute top-3 right-3 z-20">
-                    <Checkbox
-                      checked={card.selected}
-                      onCheckedChange={() => toggleCardSelection(card.id)}
-                      className="h-5 w-5 bg-white/20 border-gray-300 backdrop-blur-sm"
-                    />
-                  </div>
                   <CardHeader>
                     <CardTitle className="text-gray-300">{card.bank}</CardTitle>
                     <div className="flex flex-wrap gap-1 mt-1">
