@@ -39,7 +39,7 @@ export default function CreditWiseApp() {
 
   const banks = useMemo(() => ["HDFC Bank", "ICICI Bank", "SBI Card", "Axis Bank", "Kotak Mahindra", "Yes Bank"], [])
   const categories = useMemo(
-    () => ["Travel", "Cashback", "Business", "Student", "Rewards", "No Annual Fee", "Luxury", "Dining"],
+    () => ["Travel", "Cashback", "Student", "Rewards", "No Annual Fee", "Luxury", "Dining"],
     [],
   )
   const incomeRanges = useMemo(
