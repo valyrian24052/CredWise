@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -11,144 +11,22 @@ import { Separator } from "@/components/ui/separator"
 import { Slider } from "@/components/ui/slider"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Search, ChevronDown, Check, User, Facebook, Twitter, Instagram, Linkedin, ArrowRight } from "lucide-react"
-
-interface CreditCard {
-  id: number
-  bank: string
-  name: string
-  category: string[]
-  annualFee: number
-  incomeRequirement: number
-  benefits: string[]
-  imagePrompt: string
-  selected: boolean
-}
-
-type IncomeRangeKey = "Under ₹3,00,000" | "₹3,00,000 - ₹6,00,000" | "₹6,00,000 - ₹12,00,000" | "Over ₹12,00,000"
+import { CreditCard, IncomeRangeKey } from "@/app/types"
+import { mockCards } from "@/app/data/mockCards"
+import { BANKS, CATEGORIES, INCOME_RANGES, FEE_RANGE } from "@/app/constants/filters"
 
 export default function CreditWiseApp() {
   const [cards, setCards] = useState<CreditCard[]>([])
   const [filteredCards, setFilteredCards] = useState<CreditCard[]>([])
   const [selectedCards, setSelectedCards] = useState<CreditCard[]>([])
   const [searchQuery, setSearchQuery] = useState("")
-  const [feeRange, setFeeRange] = useState([0, 12000])
+  const [feeRange, setFeeRange] = useState<[number, number]>([FEE_RANGE.min, FEE_RANGE.max])
   const [isFilterOpen, setIsFilterOpen] = useState(true)
   const [selectedBanks, setSelectedBanks] = useState<string[]>([])
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedIncomeRange, setSelectedIncomeRange] = useState<string>("All")
 
-  const banks = useMemo(() => ["HDFC Bank", "ICICI Bank", "SBI Card", "Axis Bank", "Kotak Mahindra", "Yes Bank"], [])
-  const categories = useMemo(
-    () => ["Travel", "Cashback", "Student", "Rewards", "No Annual Fee", "Luxury", "Dining"],
-    [],
-  )
-  const incomeRanges = useMemo(
-    () => ["All", "Under ₹3,00,000", "₹3,00,000 - ₹6,00,000", "₹6,00,000 - ₹12,00,000", "Over ₹12,00,000"],
-    [],
-  )
-
   useEffect(() => {
-    const mockCards: CreditCard[] = [
-      {
-        id: 1,
-        bank: "HDFC Bank",
-        name: "Regalia First",
-        category: ["Travel", "Rewards"],
-        annualFee: 1000,
-        incomeRequirement: 600000,
-        benefits: ["5x reward points on dining and travel", "Airport lounge access", "Fuel surcharge waiver"],
-        imagePrompt: "Premium blue credit card with metallic finish",
-        selected: false,
-      },
-      {
-        id: 2,
-        bank: "ICICI Bank",
-        name: "Sapphiro Card",
-        category: ["Rewards", "Dining", "Luxury"],
-        annualFee: 3000,
-        incomeRequirement: 800000,
-        benefits: ["4x reward points on dining", "Buy 1 Get 1 movie tickets", "Complimentary golf sessions"],
-        imagePrompt: "Elegant gold metal credit card",
-        selected: false,
-      },
-      {
-        id: 3,
-        bank: "SBI Card",
-        name: "SimplySAVE",
-        category: ["Cashback"],
-        annualFee: 499,
-        incomeRequirement: 300000,
-        benefits: ["5% cashback on groceries", "1% cashback on all purchases", "Welcome gift vouchers"],
-        imagePrompt: "Modern white credit card with blue accents",
-        selected: false,
-      },
-      {
-        id: 4,
-        bank: "Axis Bank",
-        name: "Privilege Card",
-        category: ["Travel", "Rewards"],
-        annualFee: 2000,
-        incomeRequirement: 500000,
-        benefits: ["4x reward points on travel", "Complimentary lounge access", "Milestone benefits"],
-        imagePrompt: "Sleek black credit card with silver accents",
-        selected: false,
-      },
-      {
-        id: 5,
-        bank: "Kotak Mahindra",
-        name: "Royale Signature",
-        category: ["Cashback", "Rewards"],
-        annualFee: 999,
-        incomeRequirement: 400000,
-        benefits: ["2% cashback on all spends", "Dining privileges at premium restaurants", "Movie ticket offers"],
-        imagePrompt: "Modern blue and white credit card",
-        selected: false,
-      },
-      {
-        id: 6,
-        bank: "Yes Bank",
-        name: "YES First",
-        category: ["Cashback", "Student", "No Annual Fee"],
-        annualFee: 0,
-        incomeRequirement: 240000,
-        benefits: ["3% cashback on education spends", "1.5% cashback on all purchases", "Zero joining fee"],
-        imagePrompt: "Orange and gray student credit card",
-        selected: false,
-      },
-      {
-        id: 7,
-        bank: "HDFC Bank",
-        name: "MoneyBack+",
-        category: ["Cashback"],
-        annualFee: 500,
-        incomeRequirement: 300000,
-        benefits: ["2.5% cashback on online shopping", "Fuel surcharge waiver", "Low annual fee"],
-        imagePrompt: "Blue and silver cashback credit card",
-        selected: false,
-      },
-      {
-        id: 8,
-        bank: "ICICI Bank",
-        name: "Emeralde Card",
-        category: ["Travel", "Luxury"],
-        annualFee: 12000,
-        incomeRequirement: 1200000,
-        benefits: ["8x reward points on travel", "Unlimited lounge access worldwide", "Premium concierge services"],
-        imagePrompt: "Premium platinum metal credit card",
-        selected: false,
-      },
-      {
-        id: 9,
-        bank: "SBI Card",
-        name: "PRIME",
-        category: ["Cashback", "Rewards"],
-        annualFee: 2999,
-        incomeRequirement: 500000,
-        benefits: ["2% cashback on all online spends", "Complimentary movie tickets", "Annual membership rewards"],
-        imagePrompt: "Silver and blue prime credit card",
-        selected: false,
-      },
-    ]
     setCards(mockCards)
     setFilteredCards(mockCards)
   }, [])
@@ -172,10 +50,10 @@ export default function CreditWiseApp() {
 
     if (selectedIncomeRange !== "All") {
       const ranges: Record<IncomeRangeKey, (c: CreditCard) => boolean> = {
-        "Under ₹3,00,000": (c: CreditCard) => c.incomeRequirement < 300000,
-        "₹3,00,000 - ₹6,00,000": (c: CreditCard) => c.incomeRequirement >= 300000 && c.incomeRequirement < 600000,
-        "₹6,00,000 - ₹12,00,000": (c: CreditCard) => c.incomeRequirement >= 600000 && c.incomeRequirement < 1200000,
-        "Over ₹12,00,000": (c: CreditCard) => c.incomeRequirement >= 1200000,
+        "Under ₹3,00,000": (c) => c.incomeRequirement < 300000,
+        "₹3,00,000 - ₹6,00,000": (c) => c.incomeRequirement >= 300000 && c.incomeRequirement < 600000,
+        "₹6,00,000 - ₹12,00,000": (c) => c.incomeRequirement >= 600000 && c.incomeRequirement < 1200000,
+        "Over ₹12,00,000": (c) => c.incomeRequirement >= 1200000,
       }
       if (selectedIncomeRange in ranges) {
         results = results.filter(ranges[selectedIncomeRange as IncomeRangeKey])
@@ -191,7 +69,7 @@ export default function CreditWiseApp() {
     const isCurrentlySelected = cards.find((c) => c.id === id)?.selected
 
     if (currentSelectedCount >= 3 && !isCurrentlySelected) {
-      console.warn("You can select a maximum of 3 cards for comparison.")
+      alert("You can select a maximum of 3 cards for comparison.")
       return
     }
 
@@ -206,7 +84,7 @@ export default function CreditWiseApp() {
 
   const clearFilters = () => {
     setSearchQuery("")
-    setFeeRange([0, 12000])
+    setFeeRange([FEE_RANGE.min, FEE_RANGE.max])
     setSelectedBanks([])
     setSelectedCategories([])
     setSelectedIncomeRange("All")
@@ -222,8 +100,8 @@ export default function CreditWiseApp() {
     )
   }
 
-  const handleIncomeChange = (range: string) => {
-    setSelectedIncomeRange((currentRange) => (currentRange === range ? "All" : range))
+  const handleIncomeChange = (range: IncomeRangeKey | 'All') => {
+    setSelectedIncomeRange(range)
   }
 
   const getBankGradient = (bank: string) => {
@@ -298,7 +176,7 @@ export default function CreditWiseApp() {
               </div>
             </div>
             <div className="flex flex-wrap justify-center gap-2 mt-6">
-              {categories.map((category) => (
+              {CATEGORIES.map((category: string) => (
                 <Badge
                   key={category}
                   variant={selectedCategories.includes(category) ? "default" : "outline"}
@@ -321,76 +199,89 @@ export default function CreditWiseApp() {
       <main className="container mx-auto px-6 py-12">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Sidebar Filters */}
-          <aside className="md:w-1/4 lg:w-1/5">
-            <div className="bg-black border border-gray-800 rounded-lg p-4 sticky top-24">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold">Filters</h2>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={clearFilters}
-                  className="text-sm whitespace-nowrap rounded-full"
-                >
+          <aside className="md:w-1/4">
+            <div className="bg-black border border-gray-800 rounded-lg p-4 sticky top-4">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-semibold">Filters</h2>
+                <Button variant="ghost" size="sm" onClick={clearFilters}>
                   Clear All
                 </Button>
               </div>
-
+              
               {/* Banks Filter */}
-              <Collapsible open={isFilterOpen} onOpenChange={setIsFilterOpen}>
-                <CollapsibleTrigger asChild>
-                  <div className="flex justify-between items-center mb-4 cursor-pointer">
-                    <h3 className="font-semibold">Banks</h3>
-                    <ChevronDown className={`h-4 w-4 transition-transform ${isFilterOpen ? "rotate-180" : ""}`} />
-                  </div>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <div className="space-y-2 mb-6">
-                    {banks.map((bank) => (
-                      <div key={bank} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`bank-${bank}`}
-                          checked={selectedBanks.includes(bank)}
-                          onCheckedChange={() => toggleBank(bank)}
-                        />
-                        <Label htmlFor={`bank-${bank}`} className="cursor-pointer text-sm">
-                          {bank}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
+              <div className="mb-6">
+                <h3 className="font-medium mb-3">Banks</h3>
+                <div className="space-y-2">
+                  {BANKS.map((bank) => (
+                    <div key={bank} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`bank-${bank}`}
+                        checked={selectedBanks.includes(bank)}
+                        onCheckedChange={() => toggleBank(bank)}
+                      />
+                      <label htmlFor={`bank-${bank}`} className="text-sm cursor-pointer">
+                        {bank}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-              <Separator className="my-4" />
+              {/* Categories Filter */}
+              <div className="mb-6">
+                <h3 className="font-medium mb-3">Categories</h3>
+                <div className="space-y-2">
+                  {CATEGORIES.map((category) => (
+                    <div key={category} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`category-${category}`}
+                        checked={selectedCategories.includes(category)}
+                        onCheckedChange={() => toggleCategory(category)}
+                      />
+                      <label htmlFor={`category-${category}`} className="text-sm cursor-pointer">
+                        {category}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
               {/* Fee Range Filter */}
               <div className="mb-6">
-                <h3 className="font-semibold mb-4">Annual Fee Range</h3>
+                <h3 className="font-medium mb-3">Annual Fee Range</h3>
                 <div className="px-2">
-                  <Slider max={15000} step={500} value={feeRange} onValueChange={setFeeRange} className="w-full" />
-                  <div className="flex justify-between text-sm text-gray-500 mt-2">
-                    <span>₹{feeRange[0]}</span>
-                    <span>₹{feeRange[1]}</span>
+                  <Slider
+                    value={feeRange}
+                    onValueChange={(value) => setFeeRange(value as [number, number])}
+                    min={FEE_RANGE.min}
+                    max={FEE_RANGE.max}
+                    step={500}
+                    className="my-4"
+                  />
+                  <div className="flex justify-between text-sm text-gray-400">
+                    <span>₹{feeRange[0].toLocaleString()}</span>
+                    <span>₹{feeRange[1].toLocaleString()}</span>
                   </div>
                 </div>
               </div>
 
-              <Separator className="my-4" />
-
-              {/* Income Requirements Filter */}
+              {/* Income Range Filter */}
               <div>
-                <h3 className="font-semibold mb-4">Income Requirements</h3>
+                <h3 className="font-medium mb-3">Income Range</h3>
                 <div className="space-y-2">
-                  {incomeRanges.map((range) => (
+                  {INCOME_RANGES.map((range) => (
                     <div key={range} className="flex items-center space-x-2">
-                      <Checkbox
+                      <input
+                        type="radio"
                         id={`income-${range}`}
+                        name="income-range"
                         checked={selectedIncomeRange === range}
-                        onCheckedChange={() => handleIncomeChange(range)}
+                        onChange={() => handleIncomeChange(range)}
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-600"
                       />
-                      <Label htmlFor={`income-${range}`} className="cursor-pointer text-sm">
+                      <label htmlFor={`income-${range}`} className="text-sm cursor-pointer">
                         {range}
-                      </Label>
+                      </label>
                     </div>
                   ))}
                 </div>
@@ -399,24 +290,39 @@ export default function CreditWiseApp() {
           </aside>
 
           {/* Cards Grid */}
-          <div className="md:w-3/4 lg:w-4/5">
-            <div className="mb-6 flex justify-between items-center">
-              <h2 className="text-xl font-bold">Available Cards ({filteredCards.length})</h2>
-              <div className="text-sm text-gray-500">
-                {selectedCards.length > 0 && (
-                  <span>
-                    {selectedCards.length} card{selectedCards.length > 1 ? "s" : ""} selected
-                  </span>
-                )}
-              </div>
+          <div className="md:w-3/4">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold">Available Cards ({filteredCards.length})</h2>
+              {selectedCards.length > 0 && (
+                <p className="text-sm text-gray-400 mt-1">
+                  {selectedCards.length} card{selectedCards.length !== 1 ? 's' : ''} selected for comparison
+                </p>
+              )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {filteredCards.map((card) => (
                 <Card
                   key={card.id}
-                  className="overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-blue-900/50 bg-black border border-gray-800 flex flex-col hover:-translate-y-1"
+                  className={`overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-blue-900/50 bg-black border ${
+                    card.selected ? 'border-blue-500 ring-2 ring-blue-500' : 'border-gray-800'
+                  } flex flex-col hover:-translate-y-1 relative`}
                 >
+                  <div className="absolute top-2 right-2 z-10">
+                    <Checkbox
+                      checked={card.selected}
+                      onCheckedChange={() => toggleCardSelection(card.id)}
+                      className={`h-5 w-5 rounded-md border-2 ${
+                        card.selected 
+                          ? 'bg-blue-600 border-blue-600' 
+                          : 'bg-black/50 border-gray-400 hover:border-gray-300'
+                      } transition-colors`}
+                    >
+                      {card.selected && (
+                        <Check className="h-3.5 w-3.5 text-white" />
+                      )}
+                    </Checkbox>
+                  </div>
                   <div
                     className={`relative h-32 overflow-hidden flex items-center justify-center border-b border-gray-800 ${getBankGradient(card.bank)}`}
                   >
@@ -558,7 +464,7 @@ export default function CreditWiseApp() {
             <div>
               <h4 className="font-semibold mb-4">Card Categories</h4>
               <ul className="space-y-2">
-                {categories.slice(0, 5).map((category) => (
+                {CATEGORIES.slice(0, 5).map((category: string) => (
                   <li key={category}>
                     <a href="#" className="text-gray-400 hover:text-white">
                       {category}
