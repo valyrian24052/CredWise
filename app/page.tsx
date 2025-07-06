@@ -313,7 +313,7 @@ export default function CreditWiseApp() {
                       checked={card.selected}
                       onCheckedChange={() => toggleCardSelection(card.id)}
                       className={`h-5 w-5 rounded-md border-2 ${
-                        card.selected 
+                        card.selected +
                           ? 'bg-blue-600 border-blue-600' 
                           : 'bg-black/50 border-gray-400 hover:border-gray-300'
                       } transition-colors`}
