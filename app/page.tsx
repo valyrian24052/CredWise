@@ -129,7 +129,7 @@ export default function CreditWiseApp() {
       <header className="bg-black text-white py-4 px-6 shadow-md border-b border-gray-800">
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center">
-            <h1 className="text-2xl font-bold">CreditWise</h1>
+            <h1 className="text-2xl font-bold">CredWise</h1>
           </div>
           <nav className="hidden md:flex space-x-8">
             <a href="/" className="font-medium hover:text-gray-300">
